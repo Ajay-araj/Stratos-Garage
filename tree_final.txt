@@ -1,0 +1,209 @@
+Stratos Garage/
+├── backend/
+│   ├── .github/
+│   │   └── workflows/
+│   │       └── django.yml
+│   ├── inventory/
+│   │   ├── management/
+│   │   │   ├── commands/
+│   │   │   │   ├── __init__.py
+│   │   │   │   └── release_expired_reservations.py
+│   │   │   └── __init__.py
+│   │   ├── migrations/
+│   │   │   ├── 0001_initial.py
+│   │   │   ├── 0002_initial.py
+│   │   │   ├── 0003_initial.py
+│   │   │   ├── 0004_initial.py
+│   │   │   └── __init__.py
+│   │   ├── __init__.py
+│   │   ├── admin.py
+│   │   ├── apps.py
+│   │   ├── models.py
+│   │   ├── serializers.py
+│   │   ├── tests.py
+│   │   ├── urls.py
+│   │   └── views.py
+│   ├── logs/
+│   │   ├── .gitkeep
+│   │   └── django.log
+│   ├── nginx/
+│   │   └── nginx.conf
+│   ├── orders/
+│   │   ├── migrations/
+│   │   │   ├── 0001_initial.py
+│   │   │   ├── 0002_initial.py
+│   │   │   ├── 0003_initial.py
+│   │   │   └── __init__.py
+│   │   ├── __init__.py
+│   │   ├── admin.py
+│   │   ├── apps.py
+│   │   ├── models.py
+│   │   ├── serializers.py
+│   │   ├── tests.py
+│   │   ├── urls.py
+│   │   └── views.py
+│   ├── payments/
+│   │   ├── migrations/
+│   │   │   ├── 0001_initial.py
+│   │   │   ├── 0002_initial.py
+│   │   │   ├── 0003_initial.py
+│   │   │   └── __init__.py
+│   │   ├── __init__.py
+│   │   ├── admin.py
+│   │   ├── apps.py
+│   │   ├── models.py
+│   │   ├── serializers.py
+│   │   ├── tests.py
+│   │   ├── urls.py
+│   │   └── views.py
+│   ├── products/
+│   │   ├── migrations/
+│   │   │   ├── 0001_initial.py
+│   │   │   ├── 0002_initial.py
+│   │   │   └── __init__.py
+│   │   ├── __init__.py
+│   │   ├── admin.py
+│   │   ├── apps.py
+│   │   ├── models.py
+│   │   ├── serializers.py
+│   │   ├── tests.py
+│   │   ├── urls.py
+│   │   └── views.py
+│   ├── sellers/
+│   │   ├── migrations/
+│   │   │   ├── 0001_initial.py
+│   │   │   ├── 0002_initial.py
+│   │   │   └── __init__.py
+│   │   ├── __init__.py
+│   │   ├── admin.py
+│   │   ├── apps.py
+│   │   ├── models.py
+│   │   ├── serializers.py
+│   │   ├── tests.py
+│   │   ├── urls.py
+│   │   └── views.py
+│   ├── Stratosgarage/
+│   │   ├── settings/
+│   │   │   ├── __init__.py
+│   │   │   ├── base.py
+│   │   │   ├── development.py
+│   │   │   └── production.py
+│   │   ├── __init__.py
+│   │   ├── asgi.py
+│   │   ├── celery.py
+│   │   ├── exceptions.py
+│   │   ├── health.py
+│   │   ├── pagination.py
+│   │   ├── permissions.py
+│   │   ├── tasks.py
+│   │   ├── urls.py
+│   │   └── wsgi.py
+│   ├── tests/
+│   │   ├── __init__.py
+│   │   ├── conftest.py
+│   │   ├── test_auth.py
+│   │   ├── test_inventory.py
+│   │   ├── test_models.py
+│   │   ├── test_orders.py
+│   │   ├── test_payments.py
+│   │   ├── test_permissions.py
+│   │   ├── test_products.py
+│   │   ├── test_sellers.py
+│   │   └── test_wishlist.py
+│   ├── users/
+│   │   ├── migrations/
+│   │   │   ├── 0001_initial.py
+│   │   │   ├── 0002_user_is_email_verified_emailotp.py
+│   │   │   └── __init__.py
+│   │   ├── __init__.py
+│   │   ├── admin.py
+│   │   ├── apps.py
+│   │   ├── models.py
+│   │   ├── serializers.py
+│   │   ├── tasks.py
+│   │   ├── tests.py
+│   │   ├── urls.py
+│   │   └── views.py
+│   ├── wishlist/
+│   │   ├── migrations/
+│   │   │   ├── 0001_initial.py
+│   │   │   └── __init__.py
+│   │   ├── __init__.py
+│   │   ├── admin.py
+│   │   ├── apps.py
+│   │   ├── models.py
+│   │   ├── serializers.py
+│   │   ├── urls.py
+│   │   └── views.py
+│   ├── .dockerignore
+│   ├── .env
+│   ├── .env.example
+│   ├── docker-compose.yml
+│   ├── Dockerfile
+│   ├── entrypoint.sh
+│   ├── gunicorn.conf.py
+│   ├── manage.py
+│   ├── pytest.ini
+│   └── requirements.txt
+├── docs/
+├── frontend/
+│   ├── public/
+│   │   ├── favicon.svg
+│   │   └── icons.svg
+│   ├── src/
+│   │   ├── assets/
+│   │   │   ├── hero.png
+│   │   │   └── logo.jsx
+│   │   ├── components/
+│   │   │   ├── layout/
+│   │   │   │   ├── Footer.jsx
+│   │   │   │   ├── Layout.jsx
+│   │   │   │   └── Navbar.jsx
+│   │   │   └── ui/
+│   │   │       ├── Button.jsx
+│   │   │       ├── GlassCard.jsx
+│   │   │       └── Input.jsx
+│   │   ├── pages/
+│   │   │   ├── admin/
+│   │   │   │   └── Dashboard.jsx
+│   │   │   ├── auth/
+│   │   │   │   ├── CreatePassword.jsx
+│   │   │   │   ├── ForgotPassword.jsx
+│   │   │   │   ├── Login.jsx
+│   │   │   │   ├── Register.jsx
+│   │   │   │   └── VerifyOTP.jsx
+│   │   │   ├── cart/
+│   │   │   │   ├── Cart.jsx
+│   │   │   │   └── Checkout.jsx
+│   │   │   ├── dashboard/
+│   │   │   │   ├── Orders.jsx
+│   │   │   │   ├── Profile.jsx
+│   │   │   │   └── Wishlist.jsx
+│   │   │   ├── products/
+│   │   │   │   ├── ProductDetail.jsx
+│   │   │   │   └── ProductList.jsx
+│   │   │   ├── seller/
+│   │   │   │   └── Dashboard.jsx
+│   │   │   └── Home.jsx
+│   │   ├── services/
+│   │   │   └── api.js
+│   │   ├── store/
+│   │   │   ├── useAuthStore.js
+│   │   │   └── useCartStore.js
+│   │   ├── App.css
+│   │   ├── App.jsx
+│   │   ├── index.css
+│   │   └── main.jsx
+│   ├── .gitignore
+│   ├── eslint.config.js
+│   ├── index.html
+│   ├── jsconfig.json
+│   ├── package-lock.json
+│   ├── package.json
+│   ├── postcss.config.js
+│   ├── README.md
+│   ├── tailwind.config.js
+│   └── vite.config.js
+├── .gitignore
+├── print_tree2.py
+README.md/
