@@ -2,7 +2,7 @@ import axios from 'axios';
 import useAuthStore from '../store/useAuthStore';
 
 const api = axios.create({
-  baseURL: 'http://localhost:8000/api/',
+  baseURL: 'https://stratos-garage.onrender.com/api/',
   headers: { 'Content-Type': 'application/json' }
 });
 
@@ -22,7 +22,7 @@ api.interceptors.response.use(
       originalRequest._retry = true;
       try {
         const refreshToken = useAuthStore.getState().refreshToken;
-        const response = await axios.post('http://localhost:8000/api/users/auth/refresh/', {
+        const response = await axios.post( 'https://stratos-garage.onrender.com/api/users/auth/refresh/', {
           refresh: refreshToken
         });
         const { access } = response.data;
