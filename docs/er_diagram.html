@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Stratos Garage — ER Diagram</title>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&display=swap');
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Inter', sans-serif;
+    background: #0a0a0f;
+    color: #e2e8f0;
+    min-height: 100vh;
+  }
+  header {
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+    border-bottom: 1px solid rgba(99,102,241,0.3);
+    padding: 1.5rem 2rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    box-shadow: 0 4px 30px rgba(99,102,241,0.15);
+  }
+  header .logo {
+    font-size: 1.8rem;
+    font-weight: 900;
+    background: linear-gradient(135deg, #6366f1, #a855f7, #ec4899);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  header .subtitle {
+    font-size: 0.85rem;
+    color: #94a3b8;
+    font-weight: 300;
+  }
+  .badge-count {
+    margin-left: auto;
+    background: rgba(99,102,241,0.2);
+    border: 1px solid rgba(99,102,241,0.4);
+    border-radius: 999px;
+    padding: 0.3rem 0.8rem;
+    font-size: 0.78rem;
+    color: #a5b4fc;
+  }
+  .controls {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    padding: 1rem 2rem;
+    background: rgba(255,255,255,0.02);
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+  .btn {
+    padding: 0.45rem 1rem;
+    border-radius: 8px;
+    border: 1px solid rgba(99,102,241,0.35);
+    background: rgba(99,102,241,0.1);
+    color: #a5b4fc;
+    font-size: 0.8rem;
+    font-family: 'Inter', sans-serif;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .btn:hover { background: rgba(99,102,241,0.25); color: #fff; }
+  .btn.active { background: rgba(99,102,241,0.4); color: #fff; border-color: #6366f1; }
+  .legend {
+    display: flex;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+    padding: 0.6rem 2rem;
+    background: rgba(255,255,255,0.01);
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    font-size: 0.75rem;
+  }
+  .legend-item { display: flex; align-items: center; gap: 0.4rem; color: #94a3b8; }
+  .dot { width: 12px; height: 12px; border-radius: 3px; }
+  .diagram-wrap {
+    padding: 2rem;
+    overflow: auto;
+    min-height: calc(100vh - 200px);
+    display: flex;
+    justify-content: center;
+  }
+  .mermaid {
+    background: transparent;
+    max-width: 100%;
+  }
+  .footer {
+    text-align: center;
+    padding: 1rem;
+    font-size: 0.75rem;
+    color: #475569;
+    border-top: 1px solid rgba(255,255,255,0.05);
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div>
+    <div class="logo">⚙ Stratos Garage</div>
+    <div class="subtitle">Complete Entity-Relationship Diagram • Django Backend</div>
+  </div>
+  <div class="badge-count">18 Entities • 8 Apps</div>
+</header>
+
+<div class="controls">
+  <span style="font-size:0.8rem;color:#64748b;align-self:center;">Filter by app:</span>
+  <button class="btn active" onclick="showAll()">All</button>
+  <button class="btn" onclick="scrollTo('users')">👤 Users</button>
+  <button class="btn" onclick="scrollTo('sellers')">🏪 Sellers</button>
+  <button class="btn" onclick="scrollTo('products')">📦 Products</button>
+  <button class="btn" onclick="scrollTo('orders')">🛒 Orders</button>
+  <button class="btn" onclick="scrollTo('payments')">💳 Payments</button>
+  <button class="btn" onclick="scrollTo('inventory')">📊 Inventory</button>
+  <button class="btn" onclick="scrollTo('wishlist')">❤️ Wishlist</button>
+</div>
+
+<div class="legend">
+  <div class="legend-item"><div class="dot" style="background:#6366f1"></div> Users App</div>
+  <div class="legend-item"><div class="dot" style="background:#f59e0b"></div> Sellers App</div>
+  <div class="legend-item"><div class="dot" style="background:#10b981"></div> Products App</div>
+  <div class="legend-item"><div class="dot" style="background:#3b82f6"></div> Orders App</div>
+  <div class="legend-item"><div class="dot" style="background:#ec4899"></div> Payments App</div>
+  <div class="legend-item"><div class="dot" style="background:#14b8a6"></div> Inventory App</div>
+  <div class="legend-item"><div class="dot" style="background:#f97316"></div> Wishlist App</div>
+</div>
+
+<div class="diagram-wrap">
+<div class="mermaid">
+erDiagram
+
+  %% ═══════════════════════════════════════
+  %% USERS APP
+  %% ═══════════════════════════════════════
+  User {
+    int id PK
+    string username
+    string email
+    string phone
+    string role
+    string profile_picture
+    bool is_email_verified
+    datetime created_at
+    datetime updated_at
+  }
+
+  Address {
+    int id PK
+    int user_id FK
+    string full_name
+    string phone
+    string address_line1
+    string address_line2
+    string city
+    string state
+    string pincode
+    string country
+    string address_type
+    bool is_default
+    datetime created_at
+  }
+
+  PasswordResetToken {
+    int id PK
+    int user_id FK
+    uuid token
+    datetime created_at
+    datetime expires_at
+    bool is_used
+  }
+
+  EmailOTP {
+    int id PK
+    int user_id FK
+    string code
+    datetime created_at
+    datetime expires_at
+    bool is_used
+    int attempts
+  }
+
+  %% ═══════════════════════════════════════
+  %% SELLERS APP
+  %% ═══════════════════════════════════════
+  Seller {
+    int id PK
+    int user_id FK
+    string store_name
+    string store_description
+    string store_logo
+    string store_banner
+    string business_email
+    string business_phone
+    string business_address
+    string gst_number
+    string pan_number
+    string bank_account_name
+    string bank_account_number
+    string bank_ifsc
+    string bank_name
+    decimal commission_rate
+    bool is_verified
+    string verification_status
+    decimal rating
+    decimal total_sales
+    int products_sold
+    datetime created_at
+    datetime updated_at
+  }
+
+  %% ═══════════════════════════════════════
+  %% PRODUCTS APP
+  %% ═══════════════════════════════════════
+  Category {
+    int id PK
+    int parent_id FK
+    string name
+    string slug
+    string description
+    string image
+    bool is_active
+    int sort_order
+    datetime created_at
+  }
+
+  BikeCompatibility {
+    int id PK
+    string brand
+    string model
+    int year_from
+    int year_to
+    int engine_cc
+  }
+
+  Product {
+    int id PK
+    int seller_id FK
+    int category_id FK
+    string name
+    string slug
+    string description
+    string short_description
+    string brand
+    string sku_prefix
+    decimal base_price
+    bool is_active
+    bool is_featured
+    string meta_title
+    string meta_description
+    datetime created_at
+    datetime updated_at
+  }
+
+  ProductBikeCompatibility {
+    int product_id FK
+    int bikecompatibility_id FK
+  }
+
+  AttributeType {
+    int id PK
+    string name
+    string slug
+    string display_name
+    int sort_order
+  }
+
+  AttributeValue {
+    int id PK
+    int attribute_type_id FK
+    string value
+    string display_value
+    int sort_order
+  }
+
+  ProductVariant {
+    int id PK
+    int product_id FK
+    string sku
+    decimal price
+    decimal compare_price
+    int weight_grams
+    bool is_active
+    datetime created_at
+    datetime updated_at
+  }
+
+  VariantAttribute {
+    int id PK
+    int variant_id FK
+    int attribute_type_id FK
+    string value
+  }
+
+  ProductImage {
+    int id PK
+    int product_id FK
+    int variant_id FK
+    string image
+    string alt_text
+    bool is_primary
+    int sort_order
+  }
+
+  Coupon {
+    int id PK
+    int applicable_category_id FK
+    int applicable_product_id FK
+    string code
+    string description
+    string discount_type
+    decimal discount_value
+    decimal min_order_value
+    decimal max_discount_amount
+    string apply_to
+    int usage_limit
+    int times_used
+    int per_user_limit
+    bool is_active
+    datetime valid_from
+    datetime valid_until
+    datetime created_at
+  }
+
+  Review {
+    int id PK
+    int user_id FK
+    int product_id FK
+    int order_item_id FK
+    int rating
+    string title
+    string comment
+    bool is_verified_purchase
+    bool is_approved
+    int helpful_votes
+    datetime created_at
+    datetime updated_at
+  }
+
+  %% ═══════════════════════════════════════
+  %% ORDERS APP
+  %% ═══════════════════════════════════════
+  Cart {
+    int id PK
+    int user_id FK
+    int coupon_id FK
+    datetime created_at
+    datetime updated_at
+  }
+
+  CartItem {
+    int id PK
+    int cart_id FK
+    int variant_id FK
+    int quantity
+    datetime added_at
+  }
+
+  Order {
+    int id PK
+    int user_id FK
+    int coupon_id FK
+    string order_number
+    string coupon_code
+    decimal coupon_discount
+    decimal subtotal
+    decimal total_price
+    string order_status
+    string payment_status
+    string shipping_name
+    string shipping_phone
+    string shipping_address_line1
+    string shipping_address_line2
+    string shipping_city
+    string shipping_state
+    string shipping_pincode
+    string shipping_country
+    date expected_delivery
+    string notes
+    datetime created_at
+    datetime updated_at
+  }
+
+  OrderItem {
+    int id PK
+    int order_id FK
+    int variant_id FK
+    int seller_id FK
+    string product_name
+    string variant_sku
+    string variant_description
+    string product_image
+    int quantity
+    decimal unit_price
+    string return_status
+    string return_reason
+  }
+
+  Shipment {
+    int id PK
+    int order_id FK
+    string carrier
+    string tracking_number
+    string tracking_url
+    string status
+    date estimated_delivery
+    datetime shipped_at
+    datetime delivered_at
+    datetime created_at
+    datetime updated_at
+  }
+
+  Notification {
+    int id PK
+    int user_id FK
+    int related_order_id FK
+    string notification_type
+    string title
+    string message
+    bool is_read
+    datetime created_at
+  }
+
+  %% ═══════════════════════════════════════
+  %% PAYMENTS APP
+  %% ═══════════════════════════════════════
+  Payment {
+    int id PK
+    int order_id FK
+    int user_id FK
+    string payment_gateway
+    string gateway_order_id
+    string gateway_payment_id
+    string gateway_signature
+    decimal amount
+    string currency
+    string status
+    string payment_method
+    string failure_reason
+    datetime initiated_at
+    datetime completed_at
+  }
+
+  Refund {
+    int id PK
+    int payment_id FK
+    int order_item_id FK
+    decimal amount
+    string reason
+    string gateway_refund_id
+    string status
+    datetime initiated_at
+    datetime completed_at
+  }
+
+  SellerPayout {
+    int id PK
+    int payment_id FK
+    int seller_id FK
+    int order_item_id FK
+    decimal gross_amount
+    decimal platform_commission
+    decimal seller_amount
+    string payout_status
+    string payout_reference
+    datetime payout_date
+    datetime created_at
+  }
+
+  %% ═══════════════════════════════════════
+  %% INVENTORY APP
+  %% ═══════════════════════════════════════
+  Inventory {
+    int id PK
+    int variant_id FK
+    int quantity_available
+    int quantity_reserved
+    int low_stock_threshold
+    datetime last_updated
+  }
+
+  InventoryLog {
+    int id PK
+    int variant_id FK
+    int reference_order_id FK
+    int performed_by_id FK
+    int change_quantity
+    string reason
+    string notes
+    datetime created_at
+  }
+
+  StockReservation {
+    int id PK
+    int variant_id FK
+    int cart_item_id FK
+    int order_item_id FK
+    int quantity_reserved
+    datetime reserved_at
+    datetime expires_at
+    bool is_released
+  }
+
+  %% ═══════════════════════════════════════
+  %% WISHLIST APP
+  %% ═══════════════════════════════════════
+  Wishlist {
+    int id PK
+    int user_id FK
+    datetime created_at
+    datetime updated_at
+  }
+
+  WishlistItem {
+    int id PK
+    int wishlist_id FK
+    int product_id FK
+    datetime added_at
+  }
+
+  %% ═══════════════════════════════════════
+  %% RELATIONSHIPS
+  %% ═══════════════════════════════════════
+
+  User ||--o{ Address : "has"
+  User ||--o{ PasswordResetToken : "has"
+  User ||--o{ EmailOTP : "has"
+  User ||--|| Seller : "is a"
+  User ||--|| Cart : "owns"
+  User ||--|| Wishlist : "owns"
+  User ||--o{ Order : "places"
+  User ||--o{ Payment : "makes"
+  User ||--o{ Review : "writes"
+  User ||--o{ Notification : "receives"
+  User ||--o{ InventoryLog : "performs"
+
+  Seller ||--o{ Product : "lists"
+  Seller ||--o{ OrderItem : "fulfills"
+  Seller ||--o{ SellerPayout : "receives"
+
+  Category ||--o{ Category : "parent of"
+  Category ||--o{ Product : "contains"
+  Category ||--o{ Coupon : "applies to"
+
+  Product ||--o{ ProductVariant : "has"
+  Product ||--o{ ProductImage : "has"
+  Product ||--o{ Review : "receives"
+  Product ||--o{ WishlistItem : "in"
+  Product ||--o{ Coupon : "targeted by"
+  Product }o--o{ BikeCompatibility : "compatible with"
+
+  ProductVariant ||--o{ VariantAttribute : "has"
+  ProductVariant ||--o{ ProductImage : "has"
+  ProductVariant ||--o{ CartItem : "in"
+  ProductVariant ||--o{ OrderItem : "in"
+  ProductVariant ||--|| Inventory : "tracked by"
+  ProductVariant ||--o{ InventoryLog : "logged by"
+  ProductVariant ||--o{ StockReservation : "reserved by"
+
+  AttributeType ||--o{ AttributeValue : "has"
+  AttributeType ||--o{ VariantAttribute : "used in"
+
+  Coupon ||--o{ Cart : "applied to"
+  Coupon ||--o{ Order : "used in"
+
+  Cart ||--o{ CartItem : "contains"
+  CartItem ||--o{ StockReservation : "reserves"
+
+  Order ||--o{ OrderItem : "contains"
+  Order ||--|| Shipment : "shipped via"
+  Order ||--|| Payment : "paid via"
+  Order ||--o{ Notification : "triggers"
+  Order ||--o{ InventoryLog : "references"
+
+  OrderItem ||--o| Review : "reviewed as"
+  OrderItem ||--o{ Refund : "refunded via"
+  OrderItem ||--o{ SellerPayout : "generates"
+  OrderItem ||--o{ StockReservation : "reserves"
+
+  Payment ||--o{ Refund : "has"
+  Payment ||--o{ SellerPayout : "split into"
+</div>
+</div>
+
+<div class="footer">Stratos Garage ER Diagram • Generated 2026 • 18 entities across 8 Django apps</div>
+
+<script>
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'dark',
+    er: {
+      diagramPadding: 40,
+      layoutDirection: 'TB',
+      minEntityWidth: 100,
+      minEntityHeight: 75,
+      entityPadding: 15,
+      useMaxWidth: true,
+    },
+    themeVariables: {
+      primaryColor: '#1e1b4b',
+      primaryTextColor: '#e2e8f0',
+      primaryBorderColor: '#6366f1',
+      lineColor: '#6366f1',
+      secondaryColor: '#1e293b',
+      tertiaryColor: '#0f172a',
+      background: '#0a0a0f',
+      mainBkg: '#1e1b4b',
+      nodeBorder: '#6366f1',
+      clusterBkg: '#1e293b',
+      titleColor: '#e2e8f0',
+      edgeLabelBackground: '#1e293b',
+      attributeBackgroundColorEven: '#1e1b4b',
+      attributeBackgroundColorOdd: '#1a1a2e',
+    }
+  });
+
+  function showAll() {
+    document.querySelectorAll('.btn').forEach(b => b.classList.remove('active'));
+    event.target.classList.add('active');
+  }
+  function scrollTo(section) {
+    document.querySelectorAll('.btn').forEach(b => b.classList.remove('active'));
+    event.target.classList.add('active');
+    document.querySelector('.diagram-wrap').scrollIntoView({ behavior: 'smooth' });
+  }
+</script>
+</body>
+</html>

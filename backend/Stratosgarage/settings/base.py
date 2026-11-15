@@ -6,11 +6,17 @@ from pathlib import Path
 from datetime import timedelta
 from decouple import config
 
+
+def split_csv(value: str, default: str):
+    raw = value if value else default
+    return [item.strip() for item in raw.split(',') if item and item.strip()]
+
+
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
 SECRET_KEY = config('SECRET_KEY', default='django-insecure-dev-key-change-in-production')
 DEBUG = config('DEBUG', default=True, cast=bool)
-ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='localhost,127.0.0.1').split(',')
+ALLOWED_HOSTS = split_csv(config('ALLOWED_HOSTS', default='localhost,127.0.0.1'), 'localhost,127.0.0.1')
 
 # Guard: refuse to start in production with the insecure default key
 if not DEBUG and SECRET_KEY == 'django-insecure-dev-key-change-in-production':
@@ -152,11 +158,14 @@ SIMPLE_JWT = {
 }
 
 # ── CORS ───────────────────────────────────────────────────────────────────────
-CORS_ALLOWED_ORIGINS = config(
-    'CORS_ALLOWED_ORIGINS',
-    default='http://localhost:5173,http://localhost:3000'
-).split(',')
+CORS_ALLOWED_ORIGINS = split_csv(
+    config('CORS_ALLOWED_ORIGINS', default='http://localhost:5173,http://localhost:3000'),
+    'http://localhost:5173,http://localhost:3000',
+)
 CORS_ALLOW_CREDENTIALS = True
+CSRF_TRUSTED_ORIGINS = split_csv(config('CSRF_TRUSTED_ORIGINS', default=''), '')
+if not CSRF_TRUSTED_ORIGINS:
+    CSRF_TRUSTED_ORIGINS = list(dict.fromkeys(CORS_ALLOWED_ORIGINS + [config('FRONTEND_URL', default='http://localhost:5173')]))
 
 # ── Razorpay (populate in .env) ────────────────────────────────────────────────
 RAZORPAY_KEY_ID = config('RAZORPAY_KEY_ID', default='')

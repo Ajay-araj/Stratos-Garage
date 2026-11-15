@@ -1,7 +1,7 @@
 from .base import *
 
 DEBUG = False
-ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='api.stratosgarage.com').split(',')
+ALLOWED_HOSTS = split_csv(config('ALLOWED_HOSTS', default='api.stratosgarage.com'), 'api.stratosgarage.com')
 
 # Security Hardening
 SECURE_SSL_REDIRECT = config('SECURE_SSL_REDIRECT', default=True, cast=bool)

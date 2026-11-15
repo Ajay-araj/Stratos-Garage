@@ -28,7 +28,8 @@ FROM python:3.11-slim
 
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
-    DJANGO_SETTINGS_MODULE=Stratosgarage.settings
+    DJANGO_SETTINGS_MODULE=Stratosgarage.settings \
+    DJANGO_ENV=production
 
 WORKDIR /app
 
