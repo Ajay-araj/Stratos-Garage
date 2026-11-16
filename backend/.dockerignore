@@ -7,11 +7,16 @@ __pycache__
 *.sqlite3
 .env
 .env.*
-!.env.example
+**/.env
+**/.env.*
 media/
 staticfiles/
 logs/
 *.log
+*.sql
+*.dump
+*.bak
+*.backup
 .DS_Store
 Thumbs.db
 node_modules/

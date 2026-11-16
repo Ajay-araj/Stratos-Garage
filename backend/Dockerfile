@@ -26,7 +26,9 @@ FROM python:3.12-slim
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
     DJANGO_SETTINGS_MODULE=Stratosgarage.settings \
-    DJANGO_ENV=production
+    DJANGO_ENV=production \
+    HOME=/tmp \
+    TMPDIR=/tmp
 
 WORKDIR /app
 
@@ -54,7 +56,7 @@ RUN chmod +x /entrypoint.sh
 
 # Create non-root user and assign permissions
 RUN addgroup --system appgroup \
-    && adduser --system --ingroup appgroup appuser \
+    && adduser --system --ingroup appgroup --home /tmp --no-create-home appuser \
     && chown -R appuser:appgroup /app \
     && chown root:root /entrypoint.sh
 
@@ -62,8 +64,8 @@ USER appuser
 
 EXPOSE 8000
 
-HEALTHCHECK --interval=30s --timeout=10s --start-period=20s --retries=3 \
-    CMD python -c "import urllib.request; urllib.request.urlopen('http://localhost:8000/api/health/')" || exit 1
+HEALTHCHECK --interval=30s --timeout=5s --start-period=60s --retries=3 \
+    CMD python -c "import os, urllib.request; port = os.environ.get('PORT', '8000'); host = (os.environ.get('ALLOWED_HOSTS') or 'api.stratosgarage.com').split(',')[0].strip(); request = urllib.request.Request('http://127.0.0.1:' + port + '/api/health/', headers={'Host': host, 'X-Forwarded-Proto': 'https'}); urllib.request.urlopen(request, timeout=5)" || exit 1
 
 ENTRYPOINT ["/entrypoint.sh"]
 
