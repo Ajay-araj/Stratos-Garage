@@ -1,3 +1,4 @@
+
 FROM python:3.11-slim AS builder
 
 ENV PYTHONDONTWRITEBYTECODE=1 \
@@ -7,7 +8,7 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
 
 WORKDIR /build
 
-# System deps needed to compile psycopg2, Pillow
+# System dependencies needed to compile Python packages
 RUN apt-get update && apt-get install -y --no-install-recommends \
     gcc \
     libpq-dev \
@@ -18,7 +19,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 COPY requirements.txt .
 RUN pip wheel --no-cache-dir --wheel-dir /wheels -r requirements.txt
 
-# ── Runtime image ─────────────────────────────────────────────────────────────
+
+# Runtime image
 FROM python:3.11-slim
 
 ENV PYTHONDONTWRITEBYTECODE=1 \
@@ -28,27 +30,33 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
 
 WORKDIR /app
 
-# Runtime system deps only
+# Runtime dependencies
 RUN apt-get update && apt-get install -y --no-install-recommends \
     libpq5 \
     libjpeg62-turbo \
     && rm -rf /var/lib/apt/lists/*
 
-# Install pre-built wheels from builder stage
+# Install Python dependencies
 COPY --from=builder /wheels /wheels
 COPY requirements.txt .
 RUN pip install --no-cache-dir --no-index --find-links /wheels -r requirements.txt \
     && rm -rf /wheels
 
-# Copy source
+# Copy application source
 COPY . .
 
-# Create non-root user
-RUN addgroup --system appgroup && adduser --system --ingroup appgroup appuser
+# Create application directories
+RUN mkdir -p /app/media /app/staticfiles /app/logs
 
-# Ensure media/static/log directories exist with correct ownership
-RUN mkdir -p /app/media /app/staticfiles /app/logs \
-    && chown -R appuser:appgroup /app
+# Copy and prepare entrypoint BEFORE switching users
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+
+# Create non-root user and assign permissions
+RUN addgroup --system appgroup \
+    && adduser --system --ingroup appgroup appuser \
+    && chown -R appuser:appgroup /app \
+    && chown root:root /entrypoint.sh
 
 USER appuser
 
@@ -57,8 +65,6 @@ EXPOSE 8000
 HEALTHCHECK --interval=30s --timeout=10s --start-period=20s --retries=3 \
     CMD python -c "import urllib.request; urllib.request.urlopen('http://localhost:8000/api/health/')" || exit 1
 
-COPY entrypoint.sh /entrypoint.sh
-RUN chmod +x /entrypoint.sh
-
 ENTRYPOINT ["/entrypoint.sh"]
+
 CMD ["gunicorn", "Stratosgarage.wsgi:application", "--config", "gunicorn.conf.py"]
