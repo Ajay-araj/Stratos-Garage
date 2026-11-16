@@ -1,8 +1,3 @@
-"""
-Dockerfile for Stratos Garage Django backend.
-Multi-stage build: builder installs wheels, runtime is a slim image.
-"""
-# syntax=docker/dockerfile:1
 FROM python:3.11-slim AS builder
 
 ENV PYTHONDONTWRITEBYTECODE=1 \
